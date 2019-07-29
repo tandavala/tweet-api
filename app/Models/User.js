@@ -45,6 +45,9 @@ class User extends Model {
     return this.hasMany("App/Models/Reply");
   }
 
+  favorites() {
+    return this.hasMany("App/Models/Favorite");
+  }
   /**
    * A relationship on tokens is required for auth to
    * work. Since features like `refreshTokens` or
