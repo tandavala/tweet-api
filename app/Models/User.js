@@ -40,6 +40,11 @@ class User extends Model {
       "user_id"
     ).pivotTable("followers");
   }
+
+  replies() {
+    return this.hasMany("App/Models/Reply");
+  }
+
   /**
    * A relationship on tokens is required for auth to
    * work. Since features like `refreshTokens` or
