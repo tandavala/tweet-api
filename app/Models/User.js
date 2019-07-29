@@ -24,6 +24,22 @@ class User extends Model {
   tweets() {
     return this.hasMany("App/Models/Tweet");
   }
+
+  followers() {
+    return this.belongsToMany(
+      "App/Models/User",
+      "user_id",
+      "follower_id"
+    ).pivotTable("followers");
+  }
+
+  following() {
+    return this.belongsToMany(
+      "App/Models/User",
+      "follower_id",
+      "user_id"
+    ).pivotTable("followers");
+  }
   /**
    * A relationship on tokens is required for auth to
    * work. Since features like `refreshTokens` or
