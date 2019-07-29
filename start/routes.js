@@ -23,3 +23,5 @@ Route.get("/", () => {
 // Authentication routes
 
 Route.post("/signup", "UserController.signup");
+
+Route.post("/login", "UserController.login");

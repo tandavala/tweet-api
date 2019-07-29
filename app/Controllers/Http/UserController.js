@@ -24,6 +24,25 @@ class UserController {
       });
     }
   }
+  async login({ request, auth, response }) {
+    try {
+      // validate the usr credentials and generate a JWT token
+      const token = await auth.attempt(
+        request.input("email"),
+        request.input("password")
+      );
+
+      return response.json({
+        status: "success",
+        data: token
+      });
+    } catch (error) {
+      return response.status(400).json({
+        status: "error",
+        message: "Invalida email/ passowrd"
+      });
+    }
+  }
 }
 
 module.exports = UserController;
