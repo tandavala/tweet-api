@@ -1,6 +1,7 @@
 "use strict";
 
 const User = use("App/Models/User");
+const Hash = use("Hash");
 
 class UserController {
   async signup({ request, auth, response }) {
@@ -93,6 +94,34 @@ class UserController {
         message: "There a problem to update the user data"
       });
     }
+  }
+  async changePassword({ request, auth, response }) {
+    // get currently authenticatrd user
+    const user = auth.current.user;
+
+    // verify current password matches
+    const verifiyPassword = await Hash.verify(
+      request.input("password"),
+      user.password
+    );
+
+    // display appropiate message
+
+    if (!verifiyPassword) {
+      return response.status(400).json({
+        status: "error",
+        message: "Current password doesnt match"
+      });
+    }
+
+    // Has amd save new password
+    user.password = await Hash.make(request.input("newpassword"));
+    await user.save();
+
+    return response.json({
+      status: "success",
+      message: "Password updated!"
+    });
   }
 }
 
