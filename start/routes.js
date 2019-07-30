@@ -56,3 +56,11 @@ Route.get("/tweets/:id", "TweetController.show");
 Route.post("/tweets/reply/:id", "TweetController.reply").middleware([
   "auth:jwt"
 ]);
+
+// Favorite routes
+
+Route.group(() => {
+  Route.post("/create", "FavoriteController.favorite");
+})
+  .prefix("favorites")
+  .middleware(["auth:jwt"]);
