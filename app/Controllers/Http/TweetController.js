@@ -100,6 +100,37 @@ class TweetController {
       data: reply
     });
   }
+  /**
+   *  destroy a tweet from database
+   *
+   * @method destroy
+   *
+   * @param {Object} request
+   * @param {Object} auth
+   * @param {Object} params
+   * @param {Object} resonse
+   *
+   * @return {Object} json
+   *
+   */
+  async destroy({ request, auth, params, response }) {
+    // get current authenticated use
+    const user = auth.current.user;
+
+    // get tweetwoth the specified ID
+    const tweet = await Tweet.query()
+      .where("user_id", user.id)
+      .where("id", params.id)
+      .firstOrFail();
+
+    await tweet.delete();
+
+    return response.json({
+      status: "success",
+      message: "Twee deleted!",
+      data: null
+    });
+  }
 }
 
 module.exports = TweetController;

@@ -53,6 +53,10 @@ Route.post("/tweet", "TweetController.tweet").middleware(["auth:jwt"]);
 
 Route.get("/tweets/:id", "TweetController.show");
 
+Route.delete("/tweets/destroy/:id", "TweetController.destroy").middleware([
+  "auth:jwt"
+]);
+
 Route.post("/tweets/reply/:id", "TweetController.reply").middleware([
   "auth:jwt"
 ]);
