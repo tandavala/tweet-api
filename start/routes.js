@@ -42,4 +42,5 @@ Route.get(":username", "UserController.showProfile");
 
 Route.group(() => {
   Route.get("/user_to_follow", "UserController.usersToFollow");
+  Route.post("/follow/:id", "UserController.follow");
 }).prefix("users").middleware["auth:jwt"];

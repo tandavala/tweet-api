@@ -166,23 +166,47 @@ class UserController {
    * @return {JSON}
    */
 
-  async usersToFollow ({ params, auth, response }) {
+  async usersToFollow({ params, auth, response }) {
     // get currently authenticated user
-    const user = auth.current.user
+    const user = auth.current.user;
 
     // get the IDs of users the currently authenticated user is already following
-    const usersAlreadyFollowing = await user.following().ids()
+    const usersAlreadyFollowing = await user.following().ids();
 
     // fetch users the currently authenticated user is not already following
     const usersToFollow = await User.query()
-      .whereNot('id', user.id)
-      .whereNotIn('id', usersAlreadyFollowing)
-      .pick(3)
+      .whereNot("id", user.id)
+      .whereNotIn("id", usersAlreadyFollowing)
+      .pick(3);
 
     return response.json({
-      status: 'success',
+      status: "success",
       data: usersToFollow
-    })
+    });
   }
 
+  /**
+   * Follow a user
+   *
+   * @method follow
+   *
+   * @param {Object} request
+   * @param {Object} auth
+   * @param {Object} response
+   *
+   * @return {JSON}
+   */
+  async follow({ request, auth, response }) {
+    // get currently authenticated user
+    const user = auth.current.user;
+
+    // add to user's followers
+    await user.following.attach(request.input("user_id"));
+
+    return response.json({
+      status: "success",
+      data: null
+    });
+  }
+}
 module.exports = UserController;
