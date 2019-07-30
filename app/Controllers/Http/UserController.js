@@ -5,6 +5,18 @@ const Hash = use("Hash");
 const Tweet = use("App/Models/Tweet");
 
 class UserController {
+  /**
+   * Signup a uset
+   *
+   * @method signup
+   *
+   * @param {Object} request
+   * @param {Object} auth
+   * @param {Object} response
+   *
+   * @return {Object} json
+   *
+   */
   async signup({ request, auth, response }) {
     // get user data from signup form
     const userData = request.only(["name", "username", "email", "password"]);
@@ -26,6 +38,19 @@ class UserController {
       });
     }
   }
+
+  /**
+   * Login user
+   *
+   * @method login
+   *
+   * @param {Object} request
+   * @param {Object} auth
+   * @param {Object} response
+   *
+   * @return {Object} json
+   */
+
   async login({ request, auth, response }) {
     try {
       // validate the usr credentials and generate a JWT token
@@ -45,6 +70,18 @@ class UserController {
       });
     }
   }
+
+  /**
+   * Get all about the user
+   *
+   * @method me
+   *
+   * @param {Object} auth
+   * @param {Object} response
+   *
+   *
+   * @return {Object} json
+   */
 
   async me({ auth, response }) {
     const user = await User.query()
@@ -69,6 +106,20 @@ class UserController {
       data: user
     });
   }
+
+  /**
+   * update user profile
+   *
+   * @methd updateProfile
+   *
+   * @param { Object} request
+   * @param {Obejct} auth
+   * @param {Object} response
+   *
+   * @return {Object} json
+   *
+   */
+
   async updateProfile({ request, auth, response }) {
     try {
       // get currently authentucated user
@@ -96,6 +147,15 @@ class UserController {
       });
     }
   }
+  /**
+   * chenge user password
+   *
+   * @method changePassword
+   *
+   * @param {Object} request
+   * @param {Obejct} auth
+   * @param {Object} response
+   */
   async changePassword({ request, auth, response }) {
     // get currently authenticated user
     const user = auth.current.user;
@@ -124,6 +184,15 @@ class UserController {
     });
   }
 
+  /**
+   *  show user profile
+   *
+   * @method showProfile
+   *
+   * @param {Object} request
+   * @param {Object} params
+   * @param {Object} response
+   */
   async showProfile({ request, params, response }) {
     try {
       const user = await User.query()
