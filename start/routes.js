@@ -37,3 +37,9 @@ Route.group(() => {
   .middleware(["auth:jwt"]);
 
 Route.get(":username", "UserController.showProfile");
+
+// Users routes
+
+Route.group(() => {
+  Route.get("/user_to_follow", "UserController.usersToFollow");
+}).prefix("users").middleware["auth:jwt"];
