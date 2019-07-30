@@ -46,3 +46,7 @@ Route.group(() => {
   Route.delete("/unfollow/:id", "UserController.unfollow");
   Route.get("/timeline", "UserController.timeline");
 }).prefix("users").middleware["auth:jwt"];
+
+// Tweets routes
+
+Route.post("/tweet", "TweetController.tweet").middleware(["auth:jwt"]);
