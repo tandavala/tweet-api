@@ -208,5 +208,28 @@ class UserController {
       data: null
     });
   }
+  /**
+   * unfollow a user
+   *
+   * @methed unfollow
+   *
+   * @param {Object} params
+   * @param {Object} auth
+   * @param {Object} response
+   *
+   * @return  {JSON}
+   */
+  async unfollow({ params, auth, reponse }) {
+    // get currently authenticated user
+    const user = user.current.user;
+
+    // remote frm user's followers
+    await user.follow().detach(params.id);
+
+    return response.json({
+      status: "sucsess",
+      data: null
+    });
+  }
 }
 module.exports = UserController;
