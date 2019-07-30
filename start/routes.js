@@ -61,6 +61,7 @@ Route.post("/tweets/reply/:id", "TweetController.reply").middleware([
 
 Route.group(() => {
   Route.post("/create", "FavoriteController.favorite");
+  Route.delete("/destroy/:id", "FavoriteController.unFavorite");
 })
   .prefix("favorites")
   .middleware(["auth:jwt"]);
