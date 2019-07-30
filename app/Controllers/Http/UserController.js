@@ -96,32 +96,62 @@ class UserController {
     }
   }
   async changePassword({ request, auth, response }) {
-    // get currently authenticatrd user
+    // get currently authenticated user
     const user = auth.current.user;
 
-    // verify current password matches
-    const verifiyPassword = await Hash.verify(
+    // verify if current password matches
+    const verifyPassword = await Hash.verify(
       request.input("password"),
       user.password
     );
 
-    // display appropiate message
-
-    if (!verifiyPassword) {
+    // display appropriate message
+    if (!verifyPassword) {
       return response.status(400).json({
         status: "error",
-        message: "Current password doesnt match"
+        message: "Current password could not be verified! Please try again."
       });
     }
 
-    // Has amd save new password
-    user.password = await Hash.make(request.input("newpassword"));
+    // hash and save new password
+    user.password = await Hash.make(request.input("newPassword"));
     await user.save();
 
     return response.json({
       status: "success",
       message: "Password updated!"
     });
+  }
+
+  async showProfile({ request, params, response }) {
+    try {
+      const user = await User.query()
+        .where("username", params.username)
+        .with("tweets", builder => {
+          builder.with("user");
+          builder.with("favorites");
+          builder.with("replies");
+        })
+        .with("following")
+        .with("followers")
+        .with("favorites")
+        .with("favorites.tweet", builder => {
+          builder.with("user");
+          builder.with("favorites");
+          builder.with("replies");
+        })
+        .firstOrFail();
+
+      return response.json({
+        status: "success",
+        data: user
+      });
+    } catch (error) {
+      return response.status(404).json({
+        status: "error",
+        message: "User not found"
+      });
+    }
   }
 }
 

@@ -35,3 +35,5 @@ Route.group(() => {
 })
   .prefix("account")
   .middleware(["auth:jwt"]);
+
+Route.get(":username", "UserController.showProfile");
